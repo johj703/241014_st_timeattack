@@ -46,6 +46,26 @@ const TodosPage = () => {
     setContents("");
   };
 
+  const handleDelete = async (todoId: string) => {
+    await axios.delete(`http://localhost:4000/todos/${todoId}`);
+    setTodos((prev) => prev.filter((todo) => todo.id !== todoId));
+  };
+
+  const handleSwitch = async (todo: Todo) => {
+    await axios.patch(`http://localhost:4000/todos/${todoId}`, {
+      idDone: !todo.isDone,
+    });
+    setTodos((prev) =>
+      prev.map((t) => {
+        if (t.id === todo.id) {
+          return { ...todo, isDone: !todo.isDone };
+        } else {
+          return t;
+        }
+      })
+    );
+  };
+
   return (
     <div>
       <h1>Todos</h1>
@@ -73,6 +93,15 @@ const TodosPage = () => {
             <h3>{todo.title}</h3>
             <p>{todo.contents}</p>
             <p>{todo.isDone ? "완료됨" : "미완료됨"}</p>
+            <button
+              className="border p-2"
+              onClick={() => handleDelete(todo.id)}
+            >
+              삭제
+            </button>
+            <button className="border p-2" onClick={() => handleSwitch(todo)}>
+              완료
+            </button>
           </li>
         ))}
       </ul>
@@ -84,6 +113,15 @@ const TodosPage = () => {
             <h3>{todo.title}</h3>
             <p>{todo.contents}</p>
             <p>{todo.isDone ? "완료됨" : "미완료됨"}</p>
+            <button
+              className="border p-2"
+              onClick={() => handleDelete(todo.id)}
+            >
+              삭제
+            </button>
+            <button className="border p-2" onClick={() => handleSwitch(todo)}>
+              취소
+            </button>
           </li>
         ))}
       </ul>
