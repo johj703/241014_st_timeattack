@@ -52,7 +52,7 @@ const TodosPage = () => {
   };
 
   const handleSwitch = async (todo: Todo) => {
-    await axios.patch(`http://localhost:4000/todos/${todoId}`, {
+    await axios.patch(`http://localhost:4000/todos/${todo.id}`, {
       idDone: !todo.isDone,
     });
     setTodos((prev) =>
