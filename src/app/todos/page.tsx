@@ -12,6 +12,8 @@ type Todo = {
 
 const TodosPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
 
   useEffect(() => {
     // const fetchTodos = async () => {
@@ -32,9 +34,37 @@ const TodosPage = () => {
   const todosList = todos.filter((todo) => todo.isDone === false);
   const doneList = todos.filter((todo) => todo.isDone === true);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = await axios.post("http://localhost:4000/todos", {
+      title,
+      contents,
+      isDone: false,
+    });
+    setTodos([...todos, res.data]);
+    setTitle("");
+    setContents("");
+  };
+
   return (
     <div>
       <h1>Todos</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Content"
+          value={contents}
+          onChange={(e) => setContents(e.target.value)}
+        />
+        <button type="submit">Add</button>
+      </form>
 
       <h2>해야할 일</h2>
       <ul className="border-2 border-gray-300 rounded-md p-4">
