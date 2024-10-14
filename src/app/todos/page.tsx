@@ -29,11 +29,27 @@ const TodosPage = () => {
     fetchTodos();
   }, []);
 
+  const todoList = todos.filter((todo) => todo.isDone === false);
+  const doneList = todos.filter((todo) => todo.isDone === false);
+
   return (
     <div>
       <h1>Todos</h1>
+
+      <h2>해야할 일</h2>
       <ul>
-        {todos.map((todo) => (
+        {todoList.map((todo) => (
+          <li key={todo.id}>
+            <h3>{todo.title}</h3>
+            <p>{todo.contents}</p>
+            <p>{todo.isDone ? "완료됨" : "미완료됨"}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2>완료된 일</h2>
+      <ul>
+        {doneList.map((todo) => (
           <li key={todo.id}>
             <h3>{todo.title}</h3>
             <p>{todo.contents}</p>
